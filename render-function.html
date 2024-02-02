@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack</title>
+    <style>
+        .m-4 {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+
+<script src="https://unpkg.com/vue@3">
+
+</script>
+<script>
+    const {h, createApp} = Vue;
+const Stack = {
+    render() {
+        const slot = this.$slots.default ? this.$slots.default() : [];
+        return h('div', {class: 'stack'}, slot.map(child => {
+            return h('div', {class: `m-${this.$attrs.size}`}, [child])
+        }));
+    }
+}
+
+const App = {
+    components: {Stack},
+    template: `
+        <Stack size="4">
+            <div>hello</div>
+            <Stack size="4">
+                <div>hello</div>
+                <div>hello</div>
+            </Stack>
+        </Stack>
+    `
+}
+
+createApp(App).mount('#app')
+</script>
+</html>
