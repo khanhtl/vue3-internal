@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mount function</title>
+    <style>
+        .blue {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        function h(tag, props, children) {
+            return {tag, props, children}
+        }
+
+        function mount(vnode, container) {
+            const el = document.createElement(vnode.tag);
+            // props
+            if(vnode.props) {
+                for (const key in vnode.props) {
+                    const value = vnode.props[key];
+                    el.setAttribute(key, value);
+                }
+            }
+            // children
+            if(vnode.children) {
+                if(typeof vnode.children === 'string') {
+                    el.textContent = vnode.children
+                } else {
+                    vnode.children.forEach(child => {
+                       mount(child, el) 
+                    });
+                }
+            }
+            container.append(el);
+
+        }
+
+        function patch(o, n) {
+
+        }
+
+        const vnode = h('div', {class: 'blue'}, [
+            h('span', null, 'hello')
+        ]);
+
+        mount(vnode, document.getElementById('app'));
+
+    </script>
+</body>
+</html>
