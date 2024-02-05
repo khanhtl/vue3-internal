@@ -1,0 +1,42 @@
+<script>
+    class Dep {
+        constructor(value) {
+            this._value = value
+            this.subs = new Set()
+        }
+
+        get value() {
+            this.depend()
+            return this._value
+        }
+
+        set value(newValue) {
+            this._value = newValue;
+            this.notify()
+        }
+
+        depend() {
+            if(activeEffect) {
+                this.subs.add(activeEffect)
+            }
+        }
+
+        notify() {
+            this.subs.forEach(effect => {
+                effect()
+            });
+        }
+    }
+    let activeEffect;
+
+    function watchEffect(effect) {
+        activeEffect = effect;
+        effect()
+        activeEffect = null
+    }
+    let dep = new Dep(123);
+    watchEffect(() => {
+        console.log(dep.value);
+    })
+    dep.value = 234
+</script>
